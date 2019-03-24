@@ -1,3 +1,6 @@
+## 1.1.0
+* parses html & coordination
+
 ## 1.0.1+1
 * maintenance 
 
