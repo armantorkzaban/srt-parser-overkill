@@ -3,7 +3,6 @@ import 'package:srt_parser/color_map.dart';
 
 class Range {
   Range(this.begin, this.end);
-
   int begin;
   int end;
 
@@ -18,10 +17,9 @@ class HtmlCode {
 }
 
 class Coordination {
+  Coordination({this.X, this.Y});
   final int X;
   final int Y;
-
-  Coordination({this.X, this.Y});
 }
 
 class Subtitle {
@@ -35,28 +33,25 @@ class Subtitle {
 
 class Line {
   Line(this.rawLine);
-
   final String rawLine;
-
-//either a whole line has code or subLines have or none
   Coordination coordination;
-
-  // HtmlCode htmlCode;
-
+  
+  // TODO(Arman):Either a whole line has code or subLines have or none
   List<SubLine> subLines = [];
 }
 
 class SubLine {
+  SubLine({this.rawString});
   HtmlCode htmlCode = HtmlCode();
   String rawString;
   List<PartOfSpeech> posList;
-
-  SubLine({this.rawString});
 }
 
+// TODO(Arman): Merge with text_unit/WordClass
 class PartOfSpeech {}
 
 void parseHtml(Subtitle subtitle) {
+  //https://regex101.com/r/LtkFNE/4
   final RegExp detectAll = RegExp(
       r'((<(b|i|u|(font color="((#([0-9a-fA-F]+))|((rgb|rgba)\(((\d{1,3}),(\d{1,3}),(\d{1,3})|(\d{1,3}),(\d{1,3}),(\d{1,3}),(0?\.[1-9]{1,2}|1))\))|([a-z]+))"))>)+)([^<|>|\/]+)((<\/(b|i|u|font)>)+)+|([^<|>|\/]+)');
 
@@ -139,8 +134,7 @@ void parseCoordination(Subtitle subtitle, String chunk1) {
     List listOfXs =
         result.where((Match match) => match.group(2) == 'X').toList();
 
-    //divide by two and create a Coordination of each X:Y group
-
+    //divide by 2 and create a Coordination of each X:Y group
     for (Match item in listOfXs) {
       int number = int.parse(item.group(3));
       Match matchingY = result.firstWhere((Match matchY) {
@@ -215,7 +209,7 @@ int timeStampToMillis(int hour, int minute, int sec, int ms) {
 }
 
 List<String> splitIntoLines(String data) {
-// Character constants.
+  // Character constants.
   const int _LF = 10;
   const int _CR = 13;
 
@@ -279,9 +273,7 @@ List<Subtitle> parseSrt(String srt) {
     subtitle.range = parseBeginEnd(chunk[1]);
     subtitle.rawLines = chunk.sublist(2);
     parseCoordination(subtitle, chunk[1]);
-
     parseHtml(subtitle);
-
     result.add(subtitle);
   }
 
