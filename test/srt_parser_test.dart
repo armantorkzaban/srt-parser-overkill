@@ -35,7 +35,7 @@ som om han aldrig hade existerat.
     'chunks',
     () {
       final List<List<String>> chunks =
-          splitIntoSubtitleChunks(['a', 'b', 'c', '', '123', 'adfasfdsa']);
+      splitByEmptyLine(['a', 'b', 'c', '', '123', 'adfasfdsa']);
       expect(chunks.length, 2);
       expect(chunks[0][2], 'c');
       expect(chunks[1][0], '123');
@@ -89,7 +89,7 @@ som om han aldrig hade existerat.
       expect(
           parsedSubtitle[0].parsedLines[0].subLines[2].rawString,'kriminella');
       expect(parsedSubtitle[0].parsedLines[0].subLines[0].htmlCode.b, null);
-      expect(parsedSubtitle[0].parsedLines[1].coordination.X, 500);
+      expect(parsedSubtitle[0].parsedLines[1].coordinates.x, 500);
       expect(parsedSubtitle[0].parsedLines[0].subLines[2].htmlCode.b, true);
       expect(parsedSubtitle[0].parsedLines[0].subLines[2].htmlCode.u, true);
       expect(parsedSubtitle[0].parsedLines[0].subLines[2].htmlCode.i, null);
